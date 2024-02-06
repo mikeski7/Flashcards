@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Sell
+{% endblock %}
+
+{% block main %}
+<form action="/remove" method="post">
+    <div class="mb-3">
+        <select class="form-select mx-auto w-auto" name="word">
+            <option disabled selected>Word</option>
+
+        {% for row in flshcrd_list %}
+            <option value="{{row.source}}">{{row.source}}</option>
+        {% endfor %}
+
+        </select>
+    </div>
+    <button class="btn btn-primary" type="submit">Remove</button>
+</form>
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Translate
+{% endblock %}
+
+{% block main %}
+<form action="/translate" method="post">
+    <div class="mb-3">
+        <input autocomplete="off" spellcheck="false" id="word" autofocus class="form-control mx-auto w-auto" name="symbol" placeholder="Word" type="text">
+    </div>
+    <div>
+        <button id="a" type="button">translation 1</button>
+        <button id="b" type="button">translation 2</button>
+        <button id="c" type="button">translation 3</button>
+    </div>
+    <button class="btn btn-primary" type="button" onclick="sendData()">Translate</button>
+</form>
+<script>
+
+function sendData() {
+        var value = document.getElementById('word').value;
+        $.ajax({
+            url: '/process',
+            type: 'POST',
+            data: { 'data': value },
+            success: function(response) {
+                if (typeof response[0] === 'undefined') {
+                    document.getElementById('a').innerHTML = null;
+                    }
+                else{
+                    document.getElementById('a').innerHTML = response[0];
+                }
+                if (typeof response[1] === 'undefined') {
+                    document.getElementById('b').innerHTML = null;
+                    }
+                else{
+                    document.getElementById('b').innerHTML = response[1];
+                }
+                if (typeof response[2] === 'undefined') {
+                    document.getElementById('c').innerHTML = null;
+                    }
+                else{
+                    document.getElementById('c').innerHTML = response[2];
+                }
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    }
+
+    function func_a() {
+        let x = document.getElementById('b1').innerHTML;
+        document.getElementById('translation_1').value = x;
+    }
+
+    function func_b() {
+        let x = document.getElementById('b2').innerHTML;
+        document.getElementById('translation_1').value = x;
+    }
+
+    function func_c() {
+        let x = document.getElementById('b3').innerHTML;
+        document.getElementById('translation_1').value = x;
+    }
+
+</script>
+{% endblock %}

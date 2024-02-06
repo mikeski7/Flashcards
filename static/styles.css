@@ -1,0 +1,101 @@
+/* Size for brand */
+nav .navbar-brand
+{
+    font-size: xx-large;
+}
+
+/* Colors for brand */
+nav .navbar-brand .blue
+{
+    color: #537fbe;
+}
+nav .navbar-brand .red
+{
+    color: #ea433b;
+}
+nav .navbar-brand .yellow
+{
+    color: #f5b82e;
+}
+nav .navbar-brand .green
+{
+    color: #2e944b;
+}
+
+
+body {
+    padding: 20px;
+}
+
+.colored-form {
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+label {
+    margin-bottom: 5px;
+}
+
+button {
+    margin-top: 15px;
+    background-color: white!important;
+    color: black!important;
+}
+
+#b1, #b2, #b3, #b4, #b5, #b6, #b7, #b8, #b9, #b10, #b11, #b12{
+    width: 200px;
+    height: 40px;
+    margin: auto;
+    text-align: center;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    border-color: #e7e7e7;
+}
+
+.input-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* Colors for brand */
+nav .nav-link .blue
+{
+    color: #537fbe;
+    font-weight: bold;
+}
+nav .nav-link .yellow
+{
+    color: #f5b82e;
+    font-weight: bold;
+}
+nav .nav-link .green
+{
+    color: #2e944b;
+    font-weight: bold;
+}
+nav .nav-link .red
+{
+    color: #ea433b;
+    font-weight: bold;
+}
+
+#a, #b, #c{
+    width: 200px;
+    height: 40px;
+    margin: 20px;
+    text-align: center;
+    border-radius: 20px;
+    vertical-align: top;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-color: #e7e7e7;
+
+.myclass {
+    text-align: center;
+    }

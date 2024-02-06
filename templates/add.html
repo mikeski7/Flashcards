@@ -1,0 +1,284 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Add
+{% endblock %}
+
+{% block main %}
+<div class="row">
+    <form action="/add" method="post">
+        <div class="input-container">
+            <div class="col-md-3">
+                <div class="colored-form" style="background-color: #FFFF66;">
+                    <div class="form-group">
+                        <label for="word">Word:</label>
+                        <input type="text" id="word_1" name="word_1" class="form-control" onkeyup="sendData1()">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="translation">Translation:</label>
+                        <input type="text" id="translation_1" name="translation_1" class="form-control">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="colored-form" style="background-color: #ff8080;">
+                    <div class="form-group">
+                        <label for="word">Word:</label>
+                        <input type="text" id="word_2" name="word_2" class="form-control" onkeyup="sendData2()">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="translation">Translation:</label>
+                        <input type="text" id="translation_2" name="translation_2" class="form-control">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="colored-form" style="background-color: #70db70;">
+                    <div class="form-group">
+                        <label for="word">Word:</label>
+                        <input type="text" id="word_3" name="word_3" class="form-control" onkeyup="sendData3()">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="translation">Translation:</label>
+                        <input type="text" id="translation_3" name="translation_3" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="colored-form" style="background-color: #599cff;">
+                    <div class="form-group">
+                        <label for="word">Word:</label>
+                        <input type="text" id="word_4" name="word_4" class="form-control" onkeyup="sendData4()">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="translation">Translation:</label>
+                        <input type="text" id="translation_4" name="translation_4" class="form-control">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="input-container">
+            <div class="col-md-3">
+                <button id="b1" type="button" onclick="func1()">translation 1</button>
+                <button id="b2" type="button" onclick="func2()">translation 2</button>
+                <button id="b3" type="button" onclick="func3()">translation 3</button>
+            </div>
+            <div class="col-md-3">
+                <button id="b4" type="button" onclick="func4()">translation 1</button>
+                <button id="b5" type="button" onclick="func5()">translation 2</button>
+                <button id="b6" type="button" onclick="func6()">translation 3</button>
+            </div>
+            <div class="col-md-3">
+                <button id="b7" type="button" onclick="func7()">translation 1</button>
+                <button id="b8" type="button" onclick="func8()">translation 2</button>
+                <button id="b9" type="button" onclick="func9()">translation 3</button>
+            </div>
+            <div class="col-md-3">
+                <button id="b10" type="button" onclick="func10()">translation 1</button>
+                <button id="b11" type="button" onclick="func11()">translation 2</button>
+                <button id="b12" type="button" onclick="func12()">translation 3</button>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Add Flashcards</button>
+    </form>
+</div>
+
+<script>
+    function sendData1() {
+        var value = document.getElementById('word_1').value;
+        $.ajax({
+            url: '/process',
+            type: 'POST',
+            data: { 'data': value },
+            success: function(response) {
+                if (typeof response[0] === 'undefined') {
+                    document.getElementById('b1').innerHTML = null;
+                    }
+                else{
+                    document.getElementById('b1').innerHTML = response[0];
+                }
+                if (typeof response[1] === 'undefined') {
+                    document.getElementById('b2').innerHTML = null;
+                    }
+                else{
+                    document.getElementById('b2').innerHTML = response[1];
+                }
+                if (typeof response[2] === 'undefined') {
+                    document.getElementById('b3').innerHTML = null;
+                    }
+                else{
+                    document.getElementById('b3').innerHTML = response[2];
+                }
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    }
+
+    function sendData2() {
+        var value = document.getElementById('word_2').value;
+        $.ajax({
+            url: '/process',
+            type: 'POST',
+            data: { 'data': value },
+            success: function(response) {
+                if (typeof response[0] === 'undefined') {
+                    document.getElementById('b4').innerHTML = null;
+                    }
+                else{
+                    document.getElementById('b4').innerHTML = response[0];
+                }
+                if (typeof response[1] === 'undefined') {
+                    document.getElementById('b5').innerHTML = null;
+                    }
+                else{
+                    document.getElementById('b5').innerHTML = response[1];
+                }
+                if (typeof response[2] === 'undefined') {
+                    document.getElementById('b6').innerHTML = null;
+                    }
+                else{
+                    document.getElementById('b6').innerHTML = response[2];
+                }
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    }
+
+    function sendData3() {
+        var value = document.getElementById('word_3').value;
+        $.ajax({
+            url: '/process',
+            type: 'POST',
+            data: { 'data': value },
+            success: function(response) {
+                if (typeof response[0] === 'undefined') {
+                    document.getElementById('b7').innerHTML = null;
+                    }
+                else{
+                    document.getElementById('b7').innerHTML = response[0];
+                }
+                if (typeof response[1] === 'undefined') {
+                    document.getElementById('b8').innerHTML = null;
+                    }
+                else{
+                    document.getElementById('b8').innerHTML = response[1];
+                }
+                if (typeof response[2] === 'undefined') {
+                    document.getElementById('b9').innerHTML = null;
+                    }
+                else{
+                    document.getElementById('b9').innerHTML = response[2];
+                }
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    }
+
+    function sendData4() {
+        var value = document.getElementById('word_4').value;
+        $.ajax({
+            url: '/process',
+            type: 'POST',
+            data: { 'data': value },
+            success: function(response) {
+                if (typeof response[0] === 'undefined') {
+                    document.getElementById('b10').innerHTML = null;
+                    }
+                else{
+                    document.getElementById('b10').innerHTML = response[0];
+                }
+                if (typeof response[1] === 'undefined') {
+                    document.getElementById('b11').innerHTML = null;
+                    }
+                else{
+                    document.getElementById('b11').innerHTML = response[1];
+                }
+                if (typeof response[2] === 'undefined') {
+                    document.getElementById('b12').innerHTML = null;
+                    }
+                else{
+                    document.getElementById('b12').innerHTML = response[2];
+                }
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    }
+
+    function func1() {
+        let x = document.getElementById('b1').innerHTML;
+        document.getElementById('translation_1').value = x;
+    }
+
+    function func2() {
+        let x = document.getElementById('b2').innerHTML;
+        document.getElementById('translation_1').value = x;
+    }
+
+    function func3() {
+        let x = document.getElementById('b3').innerHTML;
+        document.getElementById('translation_1').value = x;
+    }
+
+    function func4() {
+        let x = document.getElementById('b4').innerHTML;
+        document.getElementById('translation_2').value = x;
+    }
+
+    function func5() {
+        let x = document.getElementById('b5').innerHTML;
+        document.getElementById('translation_2').value = x;
+    }
+
+    function func6() {
+        let x = document.getElementById('b6').innerHTML;
+        document.getElementById('translation_2').value = x;
+    }
+
+    function func7() {
+        let x = document.getElementById('b7').innerHTML;
+        document.getElementById('translation_3').value = x;
+    }
+
+    function func8() {
+        let x = document.getElementById('b8').innerHTML;
+        document.getElementById('translation_3').value = x;
+    }
+
+    function func9() {
+        let x = document.getElementById('b9').innerHTML;
+        document.getElementById('translation_3').value = x;
+    }
+
+    function func10() {
+        let x = document.getElementById('b10').innerHTML;
+        document.getElementById('translation_4').value = x;
+    }
+
+    function func11() {
+        let x = document.getElementById('b11').innerHTML;
+        document.getElementById('translation_4').value = x;
+    }
+
+    function func12() {
+        let x = document.getElementById('b12').innerHTML;
+        document.getElementById('translation_4').value = x;
+    }
+
+</script>
+
+{% endblock %}

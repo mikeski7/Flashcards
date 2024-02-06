@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Match Pairs Game</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+
+        #reload {
+            margin-bottom: 100px; /* Added margin for better spacing */
+            margin-right: 2px;
+            font-size: 20px;
+        }
+
+        #back {
+            margin-top: 100px; /* Added margin for better spacing */
+            margin-right: 20px;
+            font-size: 20px;
+        }
+
+        #buttons-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px; /* Added margin for better spacing */
+        }
+
+        #button-above {
+            margin-bottom: 20px; /* Added margin for better spacing */
+        }
+
+        #game-container {
+            display: flex;
+            align-items: center;
+        }
+
+        #counter-moves{
+            margin-right: 20px;
+            font-size: 24px;
+        }
+
+        #counter-pairs {
+            margin-right: 100px;
+            font-size: 24px;
+        }
+
+        #game-board {
+            display: grid;
+            grid-template-columns: repeat(4, 130px); /* Increased width by 30% */
+            gap: 10px;
+        }
+
+        .card {
+            position: relative;
+            width: 130px; /* Increased width by 30% */
+            height: 130px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .card .inner {
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.5s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card .inner.unflipped {
+            transform: rotateY(0deg);
+        }
+
+        .card .inner.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card .face {
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            border: 2px solid #ddd; /* Grey outline */
+            color: black;
+            font-size: 15px; /* Increased font size by 30% */
+            text-align: center;
+            line-height: 1.2;
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .card.matched .inner {
+            background-color: black;
+            color: white;
+        }
+
+        .card.matched {
+            pointer-events: none; /* Disable clicking on matched cards */
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <button id="reload" onClick="window.location.reload();">Reload</button>
+        <br></br>
+        <button id="back">Main Site</button>
+    </div>
+    <div id="counter-moves">Moves: 0</div>
+    <div id="counter-pairs">Pairs: 0</div>
+    <div id="game-board"></div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const inputPairs = {{ selected_dicts|tojson }};
+
+        const keys = inputPairs.map(pair => Object.keys(pair)[0]);
+        const values = inputPairs.map(pair => Object.values(pair)[0]);
+
+        const shuffledKeys = shuffle(keys);
+        const shuffledValues = shuffle(values);
+
+        const keyPairs = shuffledKeys.map((key, index) => ({ key }));
+        const valuePairs = shuffledValues.map((value, index) => ({ value }));
+
+        const pairs = keyPairs.concat(valuePairs);
+        let selectedCard = null;
+        let moves = 0;
+        let pairsFound = 0;
+
+        const gameContainer = document.getElementById("game-container");
+        const counterMoves = document.getElementById("counter-moves");
+        const counterPairs = document.getElementById("counter-pairs");
+        const gameBoard = document.getElementById("game-board");
+
+        pairs.forEach(function (pair, index) {
+            const cardElement = document.createElement("div");
+            cardElement.classList.add("card");
+            cardElement.dataset.pairId = index;
+            cardElement.dataset.value = pair.key || pair.value;
+            cardElement.addEventListener("click", () => handleCardClick(cardElement));
+
+            const innerElement = document.createElement("div");
+            innerElement.classList.add("inner", "unflipped");
+
+            const frontFace = document.createElement("div");
+            frontFace.classList.add("face");
+            frontFace.textContent = "?"; // Placeholder for unflipped state
+
+            const backFace = document.createElement("div");
+            backFace.classList.add("face");
+            backFace.textContent = pair.key || pair.value;
+
+            innerElement.appendChild(frontFace);
+            innerElement.appendChild(backFace);
+
+            cardElement.appendChild(innerElement);
+
+            gameBoard.appendChild(cardElement);
+        });
+
+
+        function handleCardClick(cardElement) {
+            if (cardElement.classList.contains("matched")) {
+                // Ignore clicks on matched cards
+                return;
+            }
+
+            flipCard(cardElement);
+            setTimeout(() => checkMatch(cardElement), 500);
+        }
+
+        function flipCard(cardElement) {
+            cardElement.querySelector('.inner').classList.toggle('unflipped');
+            cardElement.querySelector('.inner').classList.toggle('flipped');
+        }
+
+        function checkMatch(cardElement) {
+            const currentPairId = cardElement.dataset.pairId;
+            const currentValue = cardElement.dataset.value;
+
+            const x = inputPairs[currentPairId];
+            //const selectedPair = inputPairs[selectedPairId];
+
+            if (!selectedCard) {
+                selectedCard = cardElement;
+            } else {
+                const selectedPairId = selectedCard.dataset.pairId;
+                const selectedCardValue = selectedCard.dataset.value;
+
+                moves++;
+                counterMoves.textContent = `Moves: ${moves}`;
+
+                if (
+                    selectedCardValue == (Object.values(inputPairs.find(dictionary => Object.keys(dictionary)[0] === currentValue))[0])
+                ) {
+                    // Matched
+                    pairsFound++;
+                    selectedCard.style.backgroundColor = "red";
+                    cardElement.style.backgroundColor = "red";
+                    counterPairs.textContent = `Pairs: ${pairsFound}`;
+                    if (pairsFound === inputPairs.length) {
+                        alert("Congratulations! You've matched all pairs!");
+                        location.reload();
+                    }
+
+                    cardElement.classList.add("matched");
+                    selectedCard.classList.add("matched");
+
+                    cardElement.removeEventListener("click", () =>
+                        handleCardClick(cardElement)
+                    );
+                    selectedCard.removeEventListener("click", () =>
+                        handleCardClick(selectedCard)
+                    );
+
+                    selectedCard = null;
+                } else {
+                    // Not matched
+                    setTimeout(() => {
+                        flipCard(cardElement);
+                        flipCard(selectedCard);
+                        selectedCard = null;
+                    }, 500);
+                }
+            }
+        }
+
+
+
+
+
+
+
+
+        function shuffle(array) {
+            let currentIndex = array.length, randomIndex;
+
+            while (currentIndex !== 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+
+                [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+            }
+
+            return array;
+        }
+    });
+
+    document.getElementById('back').addEventListener('click', function() {
+        window.location.href = '/'
+  });
+
+</script>
+
+</body>
+
+</html>
